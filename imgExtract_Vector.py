@@ -14,3 +14,34 @@ select_px = img_ar[:1025, :1025]
 
 plt.imshow(select_px)
 plt.show()
+
+def bin_extract(x):
+    bin_val = bin(int(x))[2:].zfill(8)
+    bin_val = list(bin_val)
+    bin_str = "".join(bin_val[-byte_depth:])
+    return bin_str
+    
+vfunc = np.vectorize(bin_extract)
+decoded_px = vfunc(select_px)
+
+print(decoded_px.flatten())
+decoded_bin=decoded_px.flatten().tolist()
+s="".join(decoded_bin)
+decoded_ar = np.array(list(s))
+decoded_ar = decoded_ar.reshape(int(len(decoded_ar)/6),6)
+print(decoded_ar)
+decoded_ar = np.array(list(map("".join, decoded_ar)))
+
+def bin_b64(x,d):
+    return d[x]
+
+vfun = np.vectorize(bin_b64)
+encode_bin = vfun(decoded_ar, b64_rev)
+print(encode_bin)
+b64_str="".join(encode_bin).encode("ascii")
+
+print(len(b64_str))
+
+f = open("DecodedAud.mp3", "wb")
+decoded_b64 = base64.b64decode(b64_str)
+f.write(decoded_b64)
