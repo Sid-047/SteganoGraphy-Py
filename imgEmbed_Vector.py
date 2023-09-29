@@ -72,4 +72,6 @@ def steg(byteDepth, inputImg, inputFile, outImg):
     embed_img=Image.fromarray(img_ar)
     embed_img.save(outImg)
 
+print("------>", sys.argv)
+
 steg(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4])
