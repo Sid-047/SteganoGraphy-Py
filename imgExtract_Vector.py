@@ -1,3 +1,4 @@
+import sys
 import time
 import math
 import base64
@@ -45,6 +46,9 @@ def steg(byteDepth, inImg):
 
     print(len(b64_str))
 
-    f = open("DecodedAud.mp3", "wb")
+    outFile = "DecodedAud.mp3"
+    f = open(outFile, "wb")
     decoded_b64 = base64.b64decode(b64_str)
     f.write(decoded_b64)
+
+steg(sys.argv[1], sys.argv[2])
