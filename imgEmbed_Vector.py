@@ -33,17 +33,18 @@ def steg(byteDepth, inputImg, inputFile, outImg):
         raise "Insufficient Memory Spacing, Increase Byte Depth Value"
     ch_bin=np.array(list(s_bin)).reshape(int(len(s_bin)/byteDepth),byteDepth)
 
+    img = Image.open(inputImg).convert('RGB')
+    img_ar = np.array(img)
+    img_dim = img_ar.shape
+
     print(Fore.RED+"Msg bits:  ",len(s_bin))
     px_ht = math.ceil((len(s_bin)/3))
     px_wd = 1
-    if px_ht>1024:
-        px_wd = math.ceil(len(s_bin)/1024/3/byteDepth)
-        px_ht = 1024
+    if px_ht>img_dim[0]:
+        px_wd = math.ceil(len(s_bin)/img_dim[1]/3/byteDepth)
+        px_ht = img_dim[0]
     print(Fore.CYAN+Style.BRIGHT+"No of PixelsRows: ",px_ht)
     print(Fore.CYAN+Style.BRIGHT+"No of PixelsColumns: ",px_wd)
-
-    img = Image.open(inputImg).convert('RGB')
-    img_ar = np.array(img)
 
     select_px = img_ar[:px_wd+1, :px_ht+1]
     print(Fore.MAGENTA+Style.BRIGHT+"Select Pixel Count: ",len(select_px))
