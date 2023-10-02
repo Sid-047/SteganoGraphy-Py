@@ -18,6 +18,10 @@ def steg(byteDepth, inputImg, inputFile, outImg):
     aud_b64 = aud_data.decode('ascii').replace("_","/").replace("-","+").replace('=','')
     encode_ar=np.array(list(aud_b64))
 
+    img = Image.open(inputImg).convert('RGB')
+    img_ar = np.array(img)
+    img_dim = img_ar.shape
+
     def b64_bin(x,d):
         return d[x]
     vfun = np.vectorize(b64_bin)
@@ -29,13 +33,9 @@ def steg(byteDepth, inputImg, inputFile, outImg):
         s_bin+="0"*(byteDepth-(len(s_bin)%byteDepth))
     if byteDepth<=0 or byteDepth>8:
         raise "Invalid Byte Depth Value"
-    if len(s_bin)>(math.prod([1024,1024,3,byteDepth])):
+    if len(s_bin)>(math.prod([img_dim[0],img_dim[1],3,byteDepth])):
         raise "Insufficient Memory Spacing, Increase Byte Depth Value"
     ch_bin=np.array(list(s_bin)).reshape(int(len(s_bin)/byteDepth),byteDepth)
-
-    img = Image.open(inputImg).convert('RGB')
-    img_ar = np.array(img)
-    img_dim = img_ar.shape
 
     print(Fore.RED+"Msg bits:  ",len(s_bin))
     px_ht = math.ceil((len(s_bin)/3))
