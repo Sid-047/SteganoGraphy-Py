@@ -2,6 +2,7 @@ import sys
 import time
 import math
 import base64
+import piexif
 import numpy as np
 from PIL import Image
 from colorama import Fore,Style
@@ -65,13 +66,21 @@ def steg(byteDepth, inputImg, inputFile, outImg):
     encoded_px=np.append(encoded_px, flat_px[len(encoded_px):])
 
     reshaped_px = encoded_px.reshape(select_px.shape)
-    print(Fore.BLUE+Style.BRIGHT+"Embedded Region: "+str(reshaped_px.shape)+Fore.RESET)
+    stuffRegion = reshaped_px.shape
+    print(Fore.BLUE+Style.BRIGHT+"Embedded Region: ", str(stuffRegion) + Fore.RESET)
     img_ar[:px_wd+1, :px_ht+1]=reshaped_px
 
+    metaData= [byteDepth, stuffRegion, inputFile]
+    
     t2=time.time()
     print("\n\nExecTime",t2-t1)
     embed_img=Image.fromarray(img_ar)
     embed_img.save(outImg)
+    exifDict = piexif.load(outImg)
+    exifDict["Exif"][piexif.ExifIFD.UserComment] = str(metaData).encode("utf-8")
+    exifBytes = piexif.dump(exifDict)
+    meta_img = Image.open(outImg)
+    meta_img.save(outImg, exif=exifBytes)
 
 print("------>", sys.argv)
 
