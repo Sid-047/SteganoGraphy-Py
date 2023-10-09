@@ -71,9 +71,7 @@ def steg(byteDepth, inputImg, inputFile, outImg):
     img_ar[:px_wd+1, :px_ht+1]=reshaped_px
 
     metaData= [byteDepth, stuffRegion, inputFile]
-    
-    t2=time.time()
-    print("\n\nExecTime",t2-t1)
+
     embed_img=Image.fromarray(img_ar)
     embed_img.save(outImg)
     exifDict = piexif.load(outImg)
@@ -81,6 +79,8 @@ def steg(byteDepth, inputImg, inputFile, outImg):
     exifBytes = piexif.dump(exifDict)
     meta_img = Image.open(outImg)
     meta_img.save(outImg, exif=exifBytes)
+    t2=time.time()
+    print("\n\nExecTime",t2-t1)
 
 print("------>", sys.argv)
 
