@@ -1,3 +1,4 @@
+import os
 import sys
 import time
 import piexif
@@ -49,9 +50,10 @@ def steg(inImg):
     b64_str="".join(encode_bin).encode("ascii")
 
     print(len(b64_str))
-
-    outFile = "outFile."+meta_ar[2].split(".")[-1]
-    print(outFile)
+    if not os.path.isdir("OutFiles"):
+        os.makedirs("OutFiles")
+    outFile = "outFiles/"+(meta_ar[2].replace("\\", "~").replace("/", "~")).split("~")[-1]
+    print("---->", outFile)
     f = open(outFile, "wb")
     decoded_b64 = base64.b64decode(b64_str)
     f.write(decoded_b64)
