@@ -14,10 +14,10 @@ def steg(byteDepth, inputImg, inputFile, outImg):
     byteDepth = int(byteDepth)
     
     f = open(inputFile, 'rb')
-    b64_str = f.read()
-    aud_data = base64.urlsafe_b64encode(b64_str)
-    aud_b64 = aud_data.decode('ascii').replace("_","/").replace("-","+").replace('=','')
-    encode_ar=np.array(list(aud_b64))
+    strB64 = f.read()
+    fileData = base64.urlsafe_b64encode(strB64)
+    fileB64 = fileData.decode('ascii').replace("_","/").replace("-","+").replace('=','')
+    encode_ar=np.array(list(fileB64))
 
     img = Image.open(inputImg).convert('RGB')
     img_ar = np.array(img)
