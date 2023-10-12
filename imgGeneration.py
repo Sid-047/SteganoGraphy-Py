@@ -33,9 +33,15 @@ def steg(byteDepth, inputImg, inputFile, outImg):
     if len(s_bin)%byteDepth!=0:
         s_bin+="0"*(byteDepth-(len(s_bin)%byteDepth))
     if byteDepth<=0 or byteDepth>8:
-        raise "Invalid Byte Depth Value"
+        raise "Invalid ByteDepth Value"
     if len(s_bin)>(math.prod([img_dim[0],img_dim[1],3,byteDepth])):
-        raise "Insufficient Memory Spacing, Increase Byte Depth Value"
+        while(len(s_bin)>(math.prod([img_dim[0],img_dim[1],3,byteDepth]))):
+            print(Fore.CYAN+Style.BRIGHT+"Insufficient Memory Spacing"+Fore.RESET)
+            byteDepth+=1
+            print("Incremented ByteDepth -> "+str(byteDepth))
+            if byteDepth==9:
+                raise "That's too much of data! Cannot Embed the File \n Try increasing the Workin' Img Resolution" 
+
     ch_bin=np.array(list(s_bin)).reshape(int(len(s_bin)/byteDepth),byteDepth)
 
     print(Fore.RED+"Msg bits:  ",str(len(s_bin))+Fore.RESET)
