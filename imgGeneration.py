@@ -40,7 +40,7 @@ def steg(byteDepth, inputImg, inputFile, outImg):
             byteDepth+=1
             print("Incremented ByteDepth -> "+str(byteDepth))
             if byteDepth==9:
-                raise "That's too much of data! Cannot Embed the File \n Try increasing the Workin' Img Resolution" 
+                raise "That's too much of data! Cannot Embed the File \n Try increasing the Workin' Img Resolution (or) Reducin' the inFile Size!" 
 
     ch_bin=np.array(list(s_bin)).reshape(int(len(s_bin)/byteDepth),byteDepth)
 
