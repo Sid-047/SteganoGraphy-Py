@@ -23,7 +23,7 @@ def steg(inImg):
     select_px = img_ar[:int(meta_ar[1][0])+1, :int(meta_ar[1][1])+1]
 
     plt.imshow(select_px)
-    plt.show()
+    plt.show(block=False)
 
     def bin_extract(x):
         bin_val = bin(int(x))[2:].zfill(8)
