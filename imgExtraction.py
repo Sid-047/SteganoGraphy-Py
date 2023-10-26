@@ -5,6 +5,7 @@ import piexif
 import base64
 import numpy as np
 from PIL import Image
+from colorama import Style, Fore
 import matplotlib.pyplot as plt
 
 def steg(inImg):
@@ -18,6 +19,7 @@ def steg(inImg):
     print(str(meta_ar))
 
     byteDepth=meta_ar[0]
+    print(Fore.MAGENTA+Style.BRIGHT+"byteDepth: ", str(byteDepth)+Fore.RESET)
     img = Image.open(inImg).convert('RGB')
     img_ar = np.array(img)
     select_px = img_ar[:int(meta_ar[1][0])+1, :int(meta_ar[1][1])+1]
@@ -38,15 +40,15 @@ def steg(inImg):
     s="".join(decoded_bin)
     decoded_ar = np.array(list(s))
     decoded_ar = decoded_ar.reshape(int(len(decoded_ar)/6),6)
-    print(decoded_ar)
     decoded_ar = np.array(list(map("".join, decoded_ar)))
+    print(Fore.MAGENTA+Style.BRIGHT+str(decoded_ar)+Fore.RESET)
 
     def bin_b64(x,d):
         return d[x]
 
     vfun = np.vectorize(bin_b64)
     encode_bin = vfun(decoded_ar, b64_rev)
-    print(encode_bin)
+    print(Fore.CYAN+Style.BRIGHT+str(encode_bin)+Fore.RESET)
     b64_str="".join(encode_bin).encode("ascii")
 
     print(len(b64_str))
